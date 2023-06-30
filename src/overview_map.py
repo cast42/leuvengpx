@@ -60,12 +60,12 @@ for gpxfile in Path("data/gpx/").glob("*.gpx"):
     color = "red" if gpxfile.name == "DR SW Huldenberg.gpx" else "#38b580"
     # Add a polyline to connect the track points
     folium.PolyLine(
-        list(zip(lat_list, lon_list)), color=color, weight=1.5, opacity=0.8
+        list(zip(lat_list, lon_list)), color=color, weight=2.5, opacity=0.8
     ).add_to(my_map)
 
     route_map = folium.Map(location=[ave_lat, ave_lon], zoom_start=12)
     folium.PolyLine(
-        list(zip(lat_list, lon_list)), color="red", weight=2.5, opacity=0.8
+        list(zip(lat_list, lon_list)), color="red", weight=2.5, opacity=1
     ).add_to(route_map)
     html_file = f"data/html/{gpxfile.stem}.html"
     route_map.save(html_file)
