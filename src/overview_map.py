@@ -1,10 +1,29 @@
 from pathlib import Path
+from urllib.request import pathname2url
 from xml.dom import minidom
 
 import folium
+from jinja2 import Environment, FileSystemLoader
 
-for gpxfile in Path("/Users/lode/projects/leuvengpx/data/gpx/").glob("*.gpx"):
-    print(gpxfile.as_posix())
+templates_dir = "data/templates"
+env = Environment(loader=FileSystemLoader(templates_dir))
+template = env.get_template("index.html")
+
+gpx_file_list = []
+gpx_name_list = []
+for gpxfile in Path("data/gpx/").glob("*.gpx"):
+    gpx_file_list.append(pathname2url(gpxfile.stem) + ".html")
+    gpx_name_list.append(gpxfile.stem)
+
+print(gpx_file_list)
+print(gpx_name_list)
+
+with open("index.html", "w") as fh:
+    fh.write(
+        template.render(
+            names=zip(gpx_name_list, gpx_file_list),
+        )
+    )
 
 
 def get_gpx(filepath: str):
@@ -26,18 +45,17 @@ def get_gpx(filepath: str):
         h_list.append(float(elev))
 
     # Calculate average latitude and longitude
-    # ave_lat = sum(lat_list) / len(lat_list)
-    # ave_lon = sum(lon_list) / len(lon_list)
+    ave_lat = sum(lat_list) / len(lat_list)
+    ave_lon = sum(lon_list) / len(lon_list)
 
-    return lon_list, lat_list, h_list
+    return ave_lat, ave_lon, lon_list, lat_list, h_list
 
 
 # Create a folium map
 my_map = folium.Map(location=[50.876777, 4.715101], zoom_start=10)
 
-for gpxfile in Path("/Users/lode/projects/leuvengpx/data/gpx/").glob("*.gpx"):
-    print(gpxfile.as_posix())
-    lon_list, lat_list, h_list = get_gpx(gpxfile)
+for gpxfile in Path("data/gpx/").glob("*.gpx"):
+    ave_lat, ave_lon, lon_list, lat_list, h_list = get_gpx(gpxfile)
 
     color = "red" if gpxfile.name == "DR SW Huldenberg.gpx" else "#38b580"
     # Add a polyline to connect the track points
@@ -45,6 +63,13 @@ for gpxfile in Path("/Users/lode/projects/leuvengpx/data/gpx/").glob("*.gpx"):
         list(zip(lat_list, lon_list)), color=color, weight=1.5, opacity=0.8
     ).add_to(my_map)
 
+    route_map = folium.Map(location=[ave_lat, ave_lon], zoom_start=12)
+    folium.PolyLine(
+        list(zip(lat_list, lon_list)), color="red", weight=2.5, opacity=0.8
+    ).add_to(route_map)
+    html_file = f"data/html/{gpxfile.stem}.html"
+    route_map.save(html_file)
+
 # Save the map as an HTML file
-html_file = "/Users/lode/projects/leuvengpx/data/html/map.html"
+html_file = "data/html/map.html"
 my_map.save(html_file)
