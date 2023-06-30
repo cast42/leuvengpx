@@ -39,9 +39,10 @@ for gpxfile in Path("/Users/lode/projects/leuvengpx/data/gpx/").glob("*.gpx"):
     print(gpxfile.as_posix())
     lon_list, lat_list, h_list = get_gpx(gpxfile)
 
+    color = "red" if gpxfile.name == "DR SW Huldenberg.gpx" else "#38b580"
     # Add a polyline to connect the track points
     folium.PolyLine(
-        list(zip(lat_list, lon_list)), color="#38b580", weight=1.5, opacity=0.8
+        list(zip(lat_list, lon_list)), color=color, weight=1.5, opacity=0.8
     ).add_to(my_map)
 
 # Save the map as an HTML file
