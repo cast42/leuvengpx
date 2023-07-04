@@ -18,12 +18,12 @@
 </head>
 
 <body>
-    <iframe src="data/html/route_data/html/DR%20SW%20Overijse.html" style="border:none;" title="Route"></iframe>
+    <iframe src="data/html/route_{{ html_file_path}}" style="border:none;" title="Route"></iframe>
     <div id="vis"></div>
 
     <script>
         // Assign the specification to a local variable vlSpec.
-        var vlSpec = "https://raw.githubusercontent.com/cast42/leuvengpx/main/data/html/DR%20SW%20Overijse.json";
+        var vlSpec = "https://raw.githubusercontent.com/cast42/leuvengpx/main/{{ json_file_path }}";
         // Embed the visualization in the container with id `vis`
         vegaEmbed('#vis', vlSpec);
     </script>

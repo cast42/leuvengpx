@@ -244,11 +244,12 @@ def main(cli_args: List[str] = None) -> int:
         json_file_path = f"data/html/{gpxfile.stem}.json"
         with open(json_file_path, "w") as json_file:
             json_file.write(chart.to_json())
-        profile_template = env.get_template("profile.html")
+        route_template = env.get_template("route.html")
         with open(f"data/html/route_{gpxfile.stem}.html", "w") as fh:
             fh.write(
-                profile_template.render(
+                route_template.render(
                     json_file_path=pathname2url(json_file_path),
+                    html_file_path=pathname2url(html_file),
                 )
             )
 
