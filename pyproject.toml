@@ -8,9 +8,10 @@ readme = "README.md"
 packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "<3.13,>=3.10"
 folium = "^0.14.0"
 altair = "5.0.1"
+scipy = "^1.11.1"
 
 
 [tool.poetry.group.dev.dependencies]

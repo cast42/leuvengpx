@@ -1,6 +1,6 @@
 from pathlib import Path
 
-# from src import overview_map
+# from src import generate_html_from_gpx
 
 
 def test_overview_map():

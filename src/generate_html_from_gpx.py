@@ -9,8 +9,7 @@ import folium
 import numpy as np
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader
-
-# from scipy.signal import find_peaks
+from scipy.signal import find_peaks
 
 
 def get_gpx(filepath: str):
@@ -68,6 +67,44 @@ def gcd_vec(lat1, lng1, lat2, lng2):
     return arc * 6373
 
 
+CATEGORY_TO_COLOR = {
+    5: "#68bd44",
+    4: "#68bd44",
+    3: "#fbaa1c",
+    2: "#f15822",
+    1: "#ed2125",
+    0: "#800000",
+}
+
+
+def climb_category(climb_score):
+    if climb_score < 1_500:
+        return 5  # Not categorised
+    elif climb_score < 8_000:
+        return 4
+    elif climb_score > 16_000:
+        return 3
+    elif climb_score < 32000:
+        return 2
+    elif climb_score < 64000:
+        return 1
+    else:
+        return 0  # Hors categorie
+
+
+def grade_to_color(grade):
+    if grade < 3:
+        return "lightgrey"
+    elif grade < 6:
+        return CATEGORY_TO_COLOR[3]
+    elif grade < 9:
+        return CATEGORY_TO_COLOR[2]
+    elif grade < 12:
+        return CATEGORY_TO_COLOR[1]
+    else:
+        return CATEGORY_TO_COLOR[0]
+
+
 def main(cli_args: List[str] = None) -> int:
     templates_dir = "data/templates"
     env = Environment(loader=FileSystemLoader(templates_dir))
@@ -122,22 +159,51 @@ def main(cli_args: List[str] = None) -> int:
         total_distance_round = np.round(total_distance)
         df["distance_from_start"] = df["distance"].cumsum()
         df["smoothed_elevation"] = df["elev"].rolling(10).mean().bfill()
+        df["grade"] = (
+            0.1
+            * (df["elev"] - df["elev"].shift(1).bfill())
+            / (df["distance_from_start"] - df["distance_from_start"].shift(1).bfill())
+        )
+        df["smoothed_grade"] = df["grade"].rolling(10).mean()
+        df["smoothed_grade"] = df["smoothed_grade"].bfill()
+        df["smoothed_grade_color"] = df["smoothed_grade"].map(grade_to_color)
+        # df["grade_color"] = df["grade"].map(grade_to_color)
+
+        peaks, _ = find_peaks(df["smoothed_elevation"])
+        df_peaks = df.iloc[peaks, :].assign(base=0).assign(kind="peak")
+        valleys, _ = find_peaks(
+            df["smoothed_elevation"].max() - df["smoothed_elevation"]
+        )
+        df_valleys = df.iloc[valleys, :].assign(base=0).assign(kind="valley")
+        df_elevation = pd.concat([df_valleys, df_peaks], axis=0).sort_values(
+            by="distance_from_start"
+        )
+
+        # Climbscore acoording to Garmin: file:///Users/lode/Downloads/Understanding%20ClimbPro%20on%20the%20Edge%20V1.7.pdf
+
+        df_peaks_meta = (
+            pd.concat(
+                [df_elevation, df_elevation.shift(1).bfill().add_prefix("prev_")],
+                axis=1,
+            )
+            .query("(kind=='peak') & (prev_kind=='valley')")
+            .assign(
+                length=lambda df_: df_["distance_from_start"]
+                - df_["prev_distance_from_start"]
+            )
+            .assign(total_ascent=lambda df_: df_["elev"] - df_["prev_elev"])
+            .assign(grade=lambda df_: (df_["total_ascent"] / df_["length"]) * 100)
+            .assign(climb_score=lambda df_: df_["length"] * df_["grade"])
+            .assign(hill_category=lambda df_: df_["climb_score"].map(climb_category))
+        )
+        # Garmin rules
+        # df_peaks_filtered = df_peaks_meta.query(
+        #   "(climb_score >= 1_500) & (length >= 0.5) & (grade >= 3_000)"
+        # )
+        df_peaks_filtered = df_peaks_meta.query("climb_score >= 1_500")
         elevation = (
             alt.Chart(df)
-            .mark_area(
-                color=alt.Gradient(
-                    gradient="linear",
-                    stops=[
-                        alt.GradientStop(color="lightgrey", offset=0),
-                        alt.GradientStop(color="darkgrey", offset=1),
-                    ],
-                    x1=1,
-                    x2=1,
-                    y1=1,
-                    y2=0,
-                ),
-                line={"color": "darkgreen"},
-            )
+            .mark_bar()
             .encode(
                 x=alt.X("distance_from_start")
                 .axis(
@@ -154,7 +220,22 @@ def main(cli_args: List[str] = None) -> int:
                     labelExpr="datum.label + ' m'",
                     title=None,
                 ),
+                color=alt.Color("smoothed_grade_color").scale(None),
             )
+        )
+        line_peaks = (
+            alt.Chart(df_peaks_filtered)
+            .mark_rule(color="red")
+            .encode(
+                x=alt.X("distance_from_start:Q").scale(
+                    domain=(0, total_distance_round)
+                ),
+                y="elev",
+                y2="max_elevation",
+            )
+        )
+        chart = (
+            (elevation + line_peaks)
             .properties(width=800)
             .configure_view(
                 strokeWidth=0,
@@ -162,7 +243,7 @@ def main(cli_args: List[str] = None) -> int:
         )
         json_file_path = f"data/html/{gpxfile.stem}.json"
         with open(json_file_path, "w") as json_file:
-            json_file.write(elevation.to_json())
+            json_file.write(chart.to_json())
         profile_template = env.get_template("profile.html")
         with open(f"data/html/route_{gpxfile.stem}.html", "w") as fh:
             fh.write(
