@@ -249,7 +249,7 @@ def main(cli_args: List[str] = None) -> int:
             fh.write(
                 route_template.render(
                     json_file_path=pathname2url(json_file_path),
-                    html_file_path=pathname2url(html_file),
+                    html_file_path=pathname2url(f"data/html/{gpxfile.stem}.html"),
                 )
             )
 
