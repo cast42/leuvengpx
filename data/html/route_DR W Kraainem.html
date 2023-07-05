@@ -14,11 +14,31 @@
         .vega-actions a {
             margin-right: 5px;
         }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+
+        #div_one {
+            height: 50%;
+            width: 100%;
+        }
+
+        #vis {
+            height: 50%;
+            width: 100%;
+        }
     </style>
 </head>
 
 <body>
-    <iframe src="data/html/DR%20W%20Kraainem.html" width="800" style="border:none;" title="Route"></iframe>
+    <div id="div_route">
+        <iframe src="DR%20W%20Kraainem.html" style="border:none;" title="Route"></iframe>
+    </div>
     <div id="vis"></div>
 
     <script>
