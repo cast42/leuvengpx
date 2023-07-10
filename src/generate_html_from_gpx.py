@@ -138,7 +138,7 @@ def find_climbs(df: pd.DataFrame) -> pd.DataFrame:
         .assign(climb_score=lambda df_: df_["length"] * df_["grade"])
         .assign(hill_category=lambda df_: df_["climb_score"].map(climb_category))
         .query("climb_score >= 1_500")
-        .assign(max_elevation=df["elev"].max().round(-2) + 10)
+        .assign(max_elevation=df["elev"].max().round(-1) + 10)
     )
     # Garmin rules
     # df_peaks_filtered = df_peaks_meta.query(
@@ -282,17 +282,17 @@ def main(cli_args: List[str] = None) -> int:
         html_file = f"data/html/{gpxfile.stem}.html"
         f.save(html_file)
 
-        json_file_path = f"data/html/{gpxfile.stem}.json"
-        with open(json_file_path, "w") as json_file:
-            json_file.write(chart_json)
-        route_template = env.get_template("route.html")
-        with open(f"data/html/route_{gpxfile.stem}.html", "w") as fh:
-            fh.write(
-                route_template.render(
-                    json_file_path=pathname2url(json_file_path),
-                    html_file_path=pathname2url(f"{gpxfile.stem}.html"),
-                )
-            )
+        # json_file_path = f"data/html/{gpxfile.stem}.json"
+        # with open(json_file_path, "w") as json_file:
+        #     json_file.write(chart_json)
+        # route_template = env.get_template("route.html")
+        # with open(f"data/html/route_{gpxfile.stem}.html", "w") as fh:
+        #     fh.write(
+        #         route_template.render(
+        #             json_file_path=pathname2url(json_file_path),
+        #             html_file_path=pathname2url(f"{gpxfile.stem}.html"),
+        #         )
+        #     )
 
     # Save the overview map as an HTML file
     html_file = "data/html/map.html"
