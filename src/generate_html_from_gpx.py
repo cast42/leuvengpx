@@ -249,7 +249,7 @@ def main(cli_args: List[str] = None) -> int:
         # Store coordinates and elevation in a Pandas dataframe
         df = pd.DataFrame({"lon": lon_list, "lat": lat_list, "elev": h_list})
 
-        color = "red" if gpxfile.name == "DR SW Huldenberg.gpx" else "#38b580"
+        color = "red" if gpxfile.name == "DR S Incourt.gpx" else "#38b580"
         # Add a polyline to connect the track points
         folium.PolyLine(
             list(zip(lat_list, lon_list)), color=color, weight=2.5, opacity=0.8
