@@ -344,19 +344,21 @@ def main(cli_args: List[str] = None) -> int:
     env = Environment(loader=FileSystemLoader(templates_dir))
     template = env.get_template("index.html")
 
-    gpx_file_list = []
+    html_file_list = []
     gpx_name_list = []
+    gpx_download_list = []
     for gpxfile in Path("data/gpx/").glob("*.gpx"):
-        gpx_file_list.append(pathname2url(gpxfile.stem) + ".html")
+        html_file_list.append(pathname2url(gpxfile.stem) + ".html")
         gpx_name_list.append(gpxfile.stem)
+        gpx_download_list.append(gpxfile.name)
 
-    print(gpx_file_list)
+    print(html_file_list)
     print(gpx_name_list)
 
     with open("index.html", "w") as fh:
         fh.write(
             template.render(
-                names=zip(gpx_name_list, gpx_file_list),
+                names=zip(gpx_name_list, html_file_list, gpx_download_list),
             )
         )
 

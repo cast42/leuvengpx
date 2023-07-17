@@ -12,8 +12,11 @@
 <body>
     <h1><a href="data/html/map.html">GPX Leuven overview map</a></h1>
     <ul>
-        {% for name, filename in names %}
-        <li><a href="data/html/{{ filename }}"> {{ name }}</a></li>
+        {% for gpx_name, html_filename, gpx_file_name in names %}
+        <li><a href="data/html/{{ html_filename }}"> {{ gpx_name }}</a> <a href="data/gpx/{{ gpx_file_name }}"
+                download="{{ gpx_file_name }}">
+                Download
+                {{ name }}</a></li>
         {% endfor %}
     </ul>
 </body>
