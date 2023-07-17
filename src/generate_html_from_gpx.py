@@ -11,6 +11,7 @@ import folium
 import numpy as np
 import pandas as pd
 from folium import features
+from folium.features import DivIcon
 from jinja2 import Environment, FileSystemLoader
 from scipy.signal import find_peaks
 
@@ -176,7 +177,14 @@ def generate_height_profile_json(df: pd.DataFrame) -> str:
 
     elevation = (
         alt.Chart(
-            df[["distance_from_start", "smoothed_elevation", "smoothed_grade_color"]]
+            df[
+                [
+                    "distance_from_start",
+                    "smoothed_elevation",
+                    "smoothed_grade_color",
+                    "grade",
+                ]
+            ]
         )
         .mark_bar()
         .encode(
@@ -196,9 +204,58 @@ def generate_height_profile_json(df: pd.DataFrame) -> str:
                 title=None,
             ),
             color=alt.Color("smoothed_grade_color").scale(None),
+            tooltip=[
+                alt.Tooltip(
+                    "distance_from_start:Q", title="Distance (km)", format=".2f"
+                ),
+                alt.Tooltip("smoothed_elevation:Q", title="Elevation (m)", format="d"),
+                alt.Tooltip("grade_percent:Q", title="Grade (%)", format=".0%"),
+            ],
+        )
+        .transform_calculate(
+            grade_percent="datum.grade/100",
         )
     )
-
+    # max_elevation = df["elev"].max().round(-1)
+    # elevation = (
+    #     alt.Chart(df)
+    #     .mark_area(
+    #         color=alt.Gradient(
+    #             gradient="linear",
+    #             stops=[
+    #                 alt.GradientStop(color="lightgrey", offset=0),
+    #                 alt.GradientStop(color="darkgrey", offset=1),
+    #             ],
+    #             x1=1,
+    #             x2=1,
+    #             y1=1,
+    #             y2=0,
+    #         ),
+    #         line={"color": "darkgreen"},
+    #     )
+    #     .encode(
+    #         x=alt.X(
+    #             "distance_from_start",
+    #             axis=alt.Axis(
+    #                 domain=False,
+    #                 ticks=False,
+    #                 tickCount=10,
+    #                 labelExpr="datum.label + ' km'",
+    #             ),
+    #             scale=alt.Scale(domain=(0, total_distance_round)),
+    #         ),
+    #         y=alt.Y(
+    #             "elev",
+    #             axis=alt.Axis(
+    #                 domain=False,
+    #                 ticks=False,
+    #                 tickCount=5,
+    #                 labelExpr="datum.label + ' m'",
+    #             ),
+    #             scale=alt.Scale(domain=(0, max_elevation)),
+    #         ),
+    #     )
+    # )
     df_peaks_filtered = find_climbs(df)
     line_peaks = (
         alt.Chart(df_peaks_filtered[["distance_from_start", "elev", "max_elevation"]])
@@ -209,14 +266,77 @@ def generate_height_profile_json(df: pd.DataFrame) -> str:
             y2="max_elevation",
         )
     )
+    # line_peaks = (
+    #     alt.Chart(df_peaks_filtered[["distance_from_start", "elev", "max_elevation"]])
+    #     .mark_rule(color="red")
+    #     .encode(
+    #         x=alt.X(
+    #             "distance_from_start:Q",
+    #             scale=alt.Scale(domain=(0, total_distance_round)),
+    #         ),
+    #         y="elev",
+    #         y2="max_elevation",
+    #     )
+    # )
+    df_annot = (
+        df_peaks_filtered.reset_index(drop=True)
+        .assign(number=lambda df_: df_.index + 1)
+        .assign(circle_pos=lambda df_: df_["max_elevation"] + 20)[
+            [
+                "distance_from_start",
+                "max_elevation",
+                "circle_pos",
+                "number",
+                "length",
+                "total_ascent",
+                "grade",
+                "climb_score",
+                "prev_distance_from_start",
+            ]
+        ]
+    )
+    # annotation = (
+    #     alt.Chart(df_annot)
+    #     .mark_text(align="center", baseline="bottom", fontSize=16, dy=-10)
+    #     .encode(
+    #         x=alt.X("distance_from_start:Q").scale(domain=(0, total_distance_round)),
+    #         y="max_elevation",
+    #         text="number",
+    #     )
+    # )
+    annotation = (
+        alt.Chart(df_annot)
+        .mark_text(align="center", baseline="bottom", fontSize=16, dy=-10)
+        .encode(
+            x=alt.X(
+                "distance_from_start:Q",
+                scale=alt.Scale(domain=(0, total_distance_round)),
+            ),
+            y="max_elevation",
+            text="number",
+            tooltip=[
+                alt.Tooltip(
+                    "prev_distance_from_start:Q", title="Starts at (km)", format=".2f"
+                ),
+                alt.Tooltip("total_ascent:Q", title="Total ascent (m)", format="d"),
+                alt.Tooltip("length:Q", title="Length (km)", format=".2f"),
+                alt.Tooltip("grade_percent:Q", title="Average Grade", format=".0%"),
+                alt.Tooltip("climb_score:Q", title="Climb score", format="d"),
+            ],
+        )
+        .transform_calculate(
+            grade_percent="datum.grade/(100*1000)",
+            # total_ascent_int="Math.round(datum.total_ascent)",
+        )
+    )
     chart = (
-        (elevation + line_peaks)
+        (elevation + line_peaks + annotation)
         .properties(width="container")
         .configure_view(
             strokeWidth=0,
         )
     )
-    return chart.to_json()
+    return chart, df_peaks_filtered
 
 
 def main(cli_args: List[str] = None) -> int:
@@ -249,7 +369,7 @@ def main(cli_args: List[str] = None) -> int:
         # Store coordinates and elevation in a Pandas dataframe
         df = pd.DataFrame({"lon": lon_list, "lat": lat_list, "elev": h_list})
 
-        color = "red" if gpxfile.name == "DR S Incourt.gpx" else "#38b580"
+        color = "red" if gpxfile.name == "DR SW Jezus-Eik.gpx" else "#38b580"
         # Add a polyline to connect the track points
         folium.PolyLine(
             list(zip(lat_list, lon_list)), color=color, weight=2.5, opacity=0.8
@@ -267,17 +387,48 @@ def main(cli_args: List[str] = None) -> int:
         folium.PolyLine(
             list(zip(lat_list, lon_list)), color="red", weight=2.5, opacity=1
         ).add_to(route_map)
-        f.add_child(route_map)
 
-        chart_json = generate_height_profile_json(df)
+        chart, df_peaks = generate_height_profile_json(df)
         height_profile = features.VegaLite(
-            json.loads(chart_json),
+            json.loads(chart.to_json()),
             position="absolute",
             left="0%",
             width="100%",
             height="100%",
             top="70%",
         )
+        for index, row in df_peaks.reset_index(drop=True).iterrows():
+            icon_div = DivIcon(
+                icon_size=(150, 36),
+                icon_anchor=(7, 20),
+                html=f"<div style='font-size: 18pt; color : black'>{index+1}</div>",
+            )
+            length = (
+                f"{row['length']:.1f} km"
+                if row["length"] >= 1
+                else f"{row['length']*1000:.0f} m"
+            )
+            popup_text = f"""Climb {index+1}<br>
+                    Lenght: {length}<br>
+                    Avg. grade: {row['grade']/1000:.1f}%<br>
+                    Total ascend: {int(row['total_ascent'])}m
+            """
+            popup = folium.Popup(popup_text, min_width=100, max_width=200)
+            folium.Marker(
+                [row["lat"], row["lon"]],
+                popup=popup,
+                icon=icon_div,
+            ).add_to(route_map)
+            circle = folium.CircleMarker(
+                radius=15,
+                location=[row["lat"], row["lon"]],
+                # tooltip = label,
+                color="crimson",
+                fill=True,
+            )
+            circle.add_to(route_map)
+
+        f.add_child(route_map)
         f.add_child(height_profile)
         html_file = f"data/html/{gpxfile.stem}.html"
         f.save(html_file)
