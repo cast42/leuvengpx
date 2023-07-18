@@ -17,6 +17,8 @@ from folium.features import DivIcon
 from jinja2 import Environment, FileSystemLoader
 from scipy.signal import find_peaks
 
+START_LOCATION = [50.876777, 4.715101]  # Position dataroots office
+
 
 def get_gpx(filepath: str):
     data = open(filepath)
@@ -293,9 +295,7 @@ def generate_index_html():
     for gpxfile in Path("data/gpx/").glob("*.gpx"):
         wind_direction = gpxfile.stem.split()[1]
         if wind_direction not in all_wind_directions:
-            logging.warning(
-                f"Found gpx file {gpxfile.stem} that does not contains wind direction."
-            )
+            logging.warning(f"Found gpx file {gpxfile.stem} has no wind direction.")
             logging.warning("Please add a winddirection to filename of gpx file.")
             logging.warning(
                 "Possible wind directions are: {','.join(all_wind_directions)}"
@@ -315,8 +315,8 @@ def generate_index_html():
                     table_element.append(
                         {
                             "html_file": pathname2url(gpxfile.stem) + ".html",
-                            "gpx_name": gpxfile.stem,
-                            "gpx_download": gpxfile.name,
+                            "gpx_file": pathname2url(gpxfile.name),
+                            "gpx_name": gpxfile.name,
                         }
                     )
             else:
@@ -330,7 +330,7 @@ def generate_index_html():
 
 def generate_overview_map():
     # Create a folium map
-    my_map = folium.Map(location=[50.876777, 4.715101], zoom_start=10)
+    my_map = folium.Map(location=START_LOCATION, zoom_start=10)
     for gpxfile in Path("data/gpx/").glob("*.gpx"):
         # Open gpx file and parse its content
         ave_lat, ave_lon, lon_list, lat_list, h_list = get_gpx(gpxfile)
