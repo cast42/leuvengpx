@@ -1,5 +1,7 @@
 import json
+import logging
 import sys
+from collections import defaultdict
 from pathlib import Path
 from typing import List
 from urllib.request import pathname2url
@@ -216,46 +218,7 @@ def generate_height_profile_json(df: pd.DataFrame) -> str:
             grade_percent="datum.grade/100",
         )
     )
-    # max_elevation = df["elev"].max().round(-1)
-    # elevation = (
-    #     alt.Chart(df)
-    #     .mark_area(
-    #         color=alt.Gradient(
-    #             gradient="linear",
-    #             stops=[
-    #                 alt.GradientStop(color="lightgrey", offset=0),
-    #                 alt.GradientStop(color="darkgrey", offset=1),
-    #             ],
-    #             x1=1,
-    #             x2=1,
-    #             y1=1,
-    #             y2=0,
-    #         ),
-    #         line={"color": "darkgreen"},
-    #     )
-    #     .encode(
-    #         x=alt.X(
-    #             "distance_from_start",
-    #             axis=alt.Axis(
-    #                 domain=False,
-    #                 ticks=False,
-    #                 tickCount=10,
-    #                 labelExpr="datum.label + ' km'",
-    #             ),
-    #             scale=alt.Scale(domain=(0, total_distance_round)),
-    #         ),
-    #         y=alt.Y(
-    #             "elev",
-    #             axis=alt.Axis(
-    #                 domain=False,
-    #                 ticks=False,
-    #                 tickCount=5,
-    #                 labelExpr="datum.label + ' m'",
-    #             ),
-    #             scale=alt.Scale(domain=(0, max_elevation)),
-    #         ),
-    #     )
-    # )
+
     df_peaks_filtered = find_climbs(df)
     line_peaks = (
         alt.Chart(df_peaks_filtered[["distance_from_start", "elev", "max_elevation"]])
@@ -266,18 +229,7 @@ def generate_height_profile_json(df: pd.DataFrame) -> str:
             y2="max_elevation",
         )
     )
-    # line_peaks = (
-    #     alt.Chart(df_peaks_filtered[["distance_from_start", "elev", "max_elevation"]])
-    #     .mark_rule(color="red")
-    #     .encode(
-    #         x=alt.X(
-    #             "distance_from_start:Q",
-    #             scale=alt.Scale(domain=(0, total_distance_round)),
-    #         ),
-    #         y="elev",
-    #         y2="max_elevation",
-    #     )
-    # )
+
     df_annot = (
         df_peaks_filtered.reset_index(drop=True)
         .assign(number=lambda df_: df_.index + 1)
@@ -295,15 +247,7 @@ def generate_height_profile_json(df: pd.DataFrame) -> str:
             ]
         ]
     )
-    # annotation = (
-    #     alt.Chart(df_annot)
-    #     .mark_text(align="center", baseline="bottom", fontSize=16, dy=-10)
-    #     .encode(
-    #         x=alt.X("distance_from_start:Q").scale(domain=(0, total_distance_round)),
-    #         y="max_elevation",
-    #         text="number",
-    #     )
-    # )
+
     annotation = (
         alt.Chart(df_annot)
         .mark_text(align="center", baseline="bottom", fontSize=16, dy=-10)
@@ -339,43 +283,73 @@ def generate_height_profile_json(df: pd.DataFrame) -> str:
     return chart, df_peaks_filtered
 
 
-def main(cli_args: List[str] = None) -> int:
+def generate_index_html():
     templates_dir = "data/templates"
     env = Environment(loader=FileSystemLoader(templates_dir))
     template = env.get_template("index.html")
 
-    html_file_list = []
-    gpx_name_list = []
-    gpx_download_list = []
+    direction_gpx_files = defaultdict(list)
+    all_wind_directions = ["NW", "N", "NE", "W", "C", "E", "SW", "S", "SE"]
     for gpxfile in Path("data/gpx/").glob("*.gpx"):
-        html_file_list.append(pathname2url(gpxfile.stem) + ".html")
-        gpx_name_list.append(gpxfile.stem)
-        gpx_download_list.append(gpxfile.name)
+        wind_direction = gpxfile.stem.split()[1]
+        if wind_direction not in all_wind_directions:
+            logging.warning(
+                f"Found gpx file {gpxfile.stem} that does not contains wind direction."
+            )
+            logging.warning("Please add a winddirection to filename of gpx file.")
+            logging.warning(
+                "Possible wind directions are: {','.join(all_wind_directions)}"
+            )
+            logging.warning("Skipping this file")
+        direction_gpx_files[wind_direction].append(gpxfile)
 
-    print(html_file_list)
-    print(gpx_name_list)
+    wind_rows = [["NW", "N", "NE"], ["W", "C", "E"], ["SW", "S", "SE"]]
+    rows = []
+    for wind_row in wind_rows:
+        row = []
+        for wind_direction in wind_row:
+            gpx_files_in_this_direction = direction_gpx_files[wind_direction]
+            table_element = []
+            if len(gpx_files_in_this_direction):
+                for gpxfile in gpx_files_in_this_direction:
+                    table_element.append(
+                        {
+                            "html_file": pathname2url(gpxfile.stem) + ".html",
+                            "gpx_name": gpxfile.stem,
+                            "gpx_download": gpxfile.name,
+                        }
+                    )
+            else:
+                table_element.append({})
+            row.append(table_element)
+        rows.append(row)
 
     with open("index.html", "w") as fh:
-        fh.write(
-            template.render(
-                names=zip(gpx_name_list, html_file_list, gpx_download_list),
-            )
-        )
+        fh.write(template.render(rows=rows))
 
+
+def generate_overview_map():
     # Create a folium map
     my_map = folium.Map(location=[50.876777, 4.715101], zoom_start=10)
-
     for gpxfile in Path("data/gpx/").glob("*.gpx"):
         # Open gpx file and parse its content
         ave_lat, ave_lon, lon_list, lat_list, h_list = get_gpx(gpxfile)
-        # Store coordinates and elevation in a Pandas dataframe
-        df = pd.DataFrame({"lon": lon_list, "lat": lat_list, "elev": h_list})
-
         color = "red" if gpxfile.name == "DR SW Jezus-Eik.gpx" else "#38b580"
         # Add a polyline to connect the track points
         folium.PolyLine(
             list(zip(lat_list, lon_list)), color=color, weight=2.5, opacity=0.8
         ).add_to(my_map)
+    # Save the overview map as an HTML file
+    html_file = "data/html/map.html"
+    my_map.save(html_file)
+
+
+def generate_page_per_route():
+    for gpxfile in Path("data/gpx/").glob("*.gpx"):
+        # Open gpx file and parse its content
+        ave_lat, ave_lon, lon_list, lat_list, h_list = get_gpx(gpxfile)
+        # Store coordinates and elevation in a Pandas dataframe
+        df = pd.DataFrame({"lon": lon_list, "lat": lat_list, "elev": h_list})
 
         f = branca.element.Figure()
         route_map = folium.Map(
@@ -413,7 +387,7 @@ def main(cli_args: List[str] = None) -> int:
             popup_text = f"""Climb {index+1}<br>
                     Lenght: {length}<br>
                     Avg. grade: {row['grade']/1000:.1f}%<br>
-                    Total ascend: {int(row['total_ascent'])}m
+                    Total ascent: {int(row['total_ascent'])}m
             """
             popup = folium.Popup(popup_text, min_width=100, max_width=200)
             folium.Marker(
@@ -435,21 +409,11 @@ def main(cli_args: List[str] = None) -> int:
         html_file = f"data/html/{gpxfile.stem}.html"
         f.save(html_file)
 
-        # json_file_path = f"data/html/{gpxfile.stem}.json"
-        # with open(json_file_path, "w") as json_file:
-        #     json_file.write(chart_json)
-        # route_template = env.get_template("route.html")
-        # with open(f"data/html/route_{gpxfile.stem}.html", "w") as fh:
-        #     fh.write(
-        #         route_template.render(
-        #             json_file_path=pathname2url(json_file_path),
-        #             html_file_path=pathname2url(f"{gpxfile.stem}.html"),
-        #         )
-        #     )
 
-    # Save the overview map as an HTML file
-    html_file = "data/html/map.html"
-    my_map.save(html_file)
+def main(cli_args: List[str] = None) -> int:
+    generate_index_html()
+    generate_overview_map()
+    generate_page_per_route()
     return 0
 
 
