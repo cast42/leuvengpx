@@ -330,14 +330,24 @@ def generate_index_html():
 
 def generate_overview_map():
     # Create a folium map
-    my_map = folium.Map(location=START_LOCATION, zoom_start=10)
+    my_map = folium.Map(location=START_LOCATION, zoom_start=11)
     for gpxfile in Path("data/gpx/").glob("*.gpx"):
         # Open gpx file and parse its content
         ave_lat, ave_lon, lon_list, lat_list, h_list = get_gpx(gpxfile)
         color = "red" if gpxfile.name == "DR SW Jezus-Eik.gpx" else "#38b580"
         # Add a polyline to connect the track points
         folium.PolyLine(
-            list(zip(lat_list, lon_list)), color=color, weight=2.5, opacity=0.8
+            list(zip(lat_list, lon_list)),
+            color=color,
+            fillColor="white",
+            weight=5,
+            opacity=1,
+        ).add_to(my_map)
+        folium.PolyLine(
+            list(zip(lat_list, lon_list)),
+            color="white",
+            weight=1,
+            opacity=1,
         ).add_to(my_map)
     # Save the overview map as an HTML file
     html_file = "data/html/map.html"
@@ -411,11 +421,15 @@ def generate_page_per_route():
 
 
 def main(cli_args: List[str] = None) -> int:
+    logging.info("Generating index.html")
     generate_index_html()
+    logging.info("Generating overview map with all gpx routes")
     generate_overview_map()
+    logging.info("Generating page per route")
     generate_page_per_route()
     return 0
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     sys.exit(main())
