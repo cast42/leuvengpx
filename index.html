@@ -71,9 +71,12 @@
 <body>
     <h1><a href="data/html/map.html">GPX Leuven overview map</a></h1>
 
-    This is an overview of cycling routes that start at the Dataroots offices
-    in the vincinity of the railstation of Leuven. Alle road are well paved
-    with exceptional a one or more segments of gravel.
+    <p>This is an overview of cycling routes that start at the
+        <a href="https://dataroots.io/contact-us/">Dataroots offices</a>
+        in the vincinity of the railstation of Leuven. Most roads are well paved
+        with at most one or few segments of gravel. Hence for this road
+        the a race bike is recommended.
+    </p>
     <ul>
         <li>Click on the title above to get an
             <a href="data/html/map.html">overview map</a>.
@@ -328,6 +331,20 @@
             
         </tbody>
     </table>
+    <p>
+        The cycling routes are made with love by <a href="https://cast42.githubpages.io/blog">Lode Nachtergaele</a>.
+        They serve the cycling
+        enthousiast at Dataroots that enjoy a weekly afterwork ride. If you want to join those rides, join our <a
+            href="https://www.strava.com/clubs/730705">Strava club</a>.
+    </p>
+    <p>
+        Climbs are automatically detected using <a
+            href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html">Scipy's find_peaks
+            function.</a> In case you need a height profile for your own route,
+        upload your GPX file to this <a href="https://huggingface.co/spaces/cast42/height_profile">Hugging Face
+            application</a>.
+        It will generate a map and height profiles similare to those here.
+    </p>
 
 </body>
 
