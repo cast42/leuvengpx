@@ -354,6 +354,41 @@ def generate_overview_map():
     my_map.save(html_file)
 
 
+def generate_climb_profile(df_hill: pd.DataFrame, title: str):
+    climb_profile = (
+        alt.Chart(
+            df_hill,
+            title=alt.Title(
+                title,
+                anchor="start",
+            ),
+        )
+        .mark_area()
+        .encode(
+            x=alt.X("distance_from_start")
+            .axis(grid=False, tickCount=10, labelExpr="datum.label + ' m'", title=None)
+            .scale(domain=(0, df_hill["distance_from_start"].max())),
+            y=alt.Y("elev").axis(
+                domain=False,
+                ticks=False,
+                tickCount=5,
+                labelExpr="datum.label + ' m'",
+                title=None,
+            ),
+            color=alt.Color("color_grade").scale(None),
+            tooltip=[
+                alt.Tooltip("distance_from_start:Q", title="Distance (m)", format="d"),
+                alt.Tooltip("elev:Q", title="Elevation (m)", format="d"),
+                alt.Tooltip("grade_percent:Q", title="Grade (%)", format=".0%"),
+            ],
+        )
+        .transform_calculate(
+            grade_percent="datum.grade/100",
+        )
+    )
+    return climb_profile
+
+
 def generate_page_per_route():
     for gpxfile in Path("data/gpx/").glob("*.gpx"):
         # Open gpx file and parse its content
@@ -383,6 +418,7 @@ def generate_page_per_route():
             height="100%",
             top="70%",
         )
+
         for index, row in df_peaks.reset_index(drop=True).iterrows():
             icon_div = DivIcon(
                 icon_size=(150, 36),
@@ -416,6 +452,63 @@ def generate_page_per_route():
 
         f.add_child(route_map)
         f.add_child(height_profile)
+
+        html_map_profile_file = f"data/html/{gpxfile.stem}_map_profile.html"
+        f.save(html_map_profile_file)
+
+        f = branca.element.Figure()
+        Iframe_str = f"""
+        <iframe src="/{pathname2url(html_map_profile_file)}"
+                width="100%" height="800px">
+        </iframe>"""
+
+        div = branca.element.Div(width="100%")
+        div.html.add_child(branca.element.Element(Iframe_str))
+        f.add_child(div)
+
+        for index, row in df_peaks.reset_index(drop=True).iterrows():
+            df_hill = (
+                df[
+                    df["distance_from_start"].between(
+                        row["prev_distance_from_start"],
+                        row["distance_from_start"],
+                    )
+                ]
+                .assign(
+                    distance_from_start=lambda df_: (
+                        df_["distance_from_start"] - row["prev_distance_from_start"]
+                    )
+                    * 1_000
+                )
+                .assign(color_grade=lambda df_: df_["grade"].map(grade_to_color))
+            )
+            df_new_index = pd.DataFrame(
+                index=pd.Index(np.arange(0, df_hill["distance_from_start"].max(), 10))
+            )
+            df_hill_resample = pd.concat(
+                [df_hill.set_index("distance_from_start"), df_new_index], axis=0
+            ).sort_index()
+            df_hill_resample = df_hill_resample[["elev", "grade"]].interpolate()
+            df_hill_resample["color_grade"] = df_hill_resample["grade"].map(
+                grade_to_color
+            )
+            df_hill_resample = (
+                df_hill_resample.reset_index()
+                .rename(columns={"index": "distance_from_start"})
+                .sort_values(by="distance_from_start")
+            )
+            max_grade = df_hill_resample["grade"].rolling(10).mean().max() / 100
+            title = (
+                f"""Climb {index+1}: {row['length']:.2f}km """
+                f"""Total ascent: {int(row['total_ascent']):d}hm """
+                f"""Avg. grade: {(row['grade']/100_000):.2%} """
+                f"""Max. grade: {max_grade:.2%}"""
+            )
+            altair_climb_profile = generate_climb_profile(df_hill_resample, title)
+            folium_climb_profile = features.VegaLite(
+                json.loads(altair_climb_profile.to_json()),
+            )
+            f.add_child(folium_climb_profile)
         html_file = f"data/html/{gpxfile.stem}.html"
         f.save(html_file)
 

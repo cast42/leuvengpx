@@ -1,13 +1,26 @@
-## Project title
+## Race bike GPX files starting in Leuven Belgium
 
-This boilerplate project contains the following setup ready for you to go:
+This repository contains a Python script to generate HTML starting from a folder of GPX files.
+The result is an interactive overview map, containing all gpx routes and a table with links
+to detailed overviews per route plus a download button for the GPX files.
+
+The detail page per route shows a map with the route and a height profile showing
+the altitude and climbs along the route.
+
+The climbs are detected using scipy's [find_peak](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html) algorithm.
+
+The GPX files must be stored in the data/gpx folder.
+All files matching data/gpx/*.gpx will appear on the front page index.html.
+The GPX files must comply to the following template: `r"^DR\s[N|E|W|C|S]{1,2}\s[\w\s]+\.gpx$"`
+
+This project was derived from the [minimal python boilerplate](https://github.com/datarootsio/python-minimal-boilerplate). The template project contains the following setup ready for you to go:
 
 * package/environment management
-    * `poetry`
+  * `poetry`
 * code validation
-    * `black`
-    * `ruff`
-    * `pytest`
+  * `black`
+  * `ruff`
+  * `pytest`
 * pre-commit hooks
 
 # Setup
@@ -19,5 +32,7 @@ This boilerplate project contains the following setup ready for you to go:
    2. `poetry install`
    3. `pre-commit install`
 4. On each `git commit` the code validation packages will be run before the actual commit.
-5. Explore the setup in the folder structure of this package.
-6. Profit.
+5. Add your GPX files to the data/gpx folder
+6. Run `python generate_html_from_gpx.py`to generate index.html and content of data/html
+7. Goto Pages in Settings to make this a Github Pages repository.
+8. Browse to `https://<username>.github.io/<repository>``. E.g. [https://cast42.github.io/leuvengpx/](https://cast42.github.io/leuvengpx/)
