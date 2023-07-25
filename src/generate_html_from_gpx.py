@@ -334,7 +334,7 @@ def generate_overview_map():
     for gpxfile in Path("data/gpx/").glob("*.gpx"):
         # Open gpx file and parse its content
         ave_lat, ave_lon, lon_list, lat_list, h_list = get_gpx(gpxfile)
-        color = "red" if gpxfile.name == "DR SW Jezus-Eik.gpx" else "#38b580"
+        color = "red" if gpxfile.name == "DR S Dion-le-mont.gpx" else "#38b580"
         # Add a polyline to connect the track points
         folium.PolyLine(
             list(zip(lat_list, lon_list)),
