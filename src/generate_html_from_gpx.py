@@ -144,7 +144,6 @@ def find_climbs(df: pd.DataFrame) -> pd.DataFrame:
         .assign(hill_category=lambda df_: df_["climb_score"].map(climb_category))
         .query("climb_score >= 1_500")
         .assign(max_elevation=df["elev"].max().round(-1) + 10)
-        .assign(max_grade=lambda df_: df_["grade"].max())
     )
     # Garmin rules
     # df_peaks_filtered = df_peaks_meta.query(
@@ -245,7 +244,6 @@ def generate_height_profile_json(df: pd.DataFrame) -> str:
                 "length",
                 "total_ascent",
                 "grade",
-                "max_grade",
                 "climb_score",
                 "prev_distance_from_start",
             ]
@@ -269,7 +267,6 @@ def generate_height_profile_json(df: pd.DataFrame) -> str:
                 alt.Tooltip("total_ascent:Q", title="Total ascent (m)", format="d"),
                 alt.Tooltip("length:Q", title="Length (km)", format=".2f"),
                 alt.Tooltip("grade_percent:Q", title="Average Grade", format=".0%"),
-                alt.Tooltip("max_grade_percent:Q", title="Maximum Grade", format=".0%"),
                 alt.Tooltip("climb_score:Q", title="Climb score", format="d"),
             ],
         )
