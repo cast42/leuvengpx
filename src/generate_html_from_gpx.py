@@ -457,13 +457,15 @@ def generate_page_per_route():
         f.save(html_map_profile_file)
 
         f = branca.element.Figure()
-        Iframe_str = f"""
-        <iframe src="/{pathname2url(html_map_profile_file)}"
-                width="100%" height="800px">
-        </iframe>"""
+        # Iframe_str = f"""
+        # <iframe src="/{pathname2url(html_map_profile_file)}"
+        #         width="100%" height="800px">
+        # </iframe>"""
 
         div = branca.element.Div(width="100%")
-        div.html.add_child(branca.element.Element(Iframe_str))
+        div.add_child(route_map)
+        div.add_child(height_profile)
+
         f.add_child(div)
 
         for index, row in df_peaks.reset_index(drop=True).iterrows():
@@ -516,7 +518,7 @@ def generate_page_per_route():
             )
             altair_climb_profile = generate_climb_profile(df_hill_resample, title)
             folium_climb_profile = features.VegaLite(
-                json.loads(altair_climb_profile.to_json()),
+                json.loads(altair_climb_profile.to_json()), height="30%"
             )
             f.add_child(folium_climb_profile)
         html_file = f"data/html/{gpxfile.stem}.html"
