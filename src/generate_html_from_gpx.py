@@ -453,15 +453,6 @@ def generate_page_per_route():
         f.add_child(route_map)
         f.add_child(height_profile)
 
-        html_map_profile_file = f"data/html/{gpxfile.stem}_map_profile.html"
-        f.save(html_map_profile_file)
-
-        f = branca.element.Figure()
-        # Iframe_str = f"""
-        # <iframe src="/{pathname2url(html_map_profile_file)}"
-        #         width="100%" height="800px">
-        # </iframe>"""
-
         div = branca.element.Div(width="100%")
         div.add_child(route_map)
         div.add_child(height_profile)
