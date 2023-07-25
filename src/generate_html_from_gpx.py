@@ -485,10 +485,20 @@ def generate_page_per_route():
             df_new_index = pd.DataFrame(
                 index=pd.Index(np.arange(0, df_hill["distance_from_start"].max(), 10))
             )
-            df_hill_resample = pd.concat(
-                [df_hill.set_index("distance_from_start"), df_new_index], axis=0
-            ).sort_index()
-            df_hill_resample = df_hill_resample[["elev", "grade"]].interpolate()
+            df_hill_resample = (
+                pd.concat(
+                    [df_hill.set_index("distance_from_start"), df_new_index], axis=0
+                )
+                .sort_index()
+                .assign(grade=lambda df_: df_["grade"].clip(lower=-35, upper=35))
+            )
+            df_hill_resample = (
+                df_hill_resample[["elev", "grade"]]
+                .interpolate(axis=0)
+                .fillna(method="ffill", axis=0)
+                .fillna(method="bfill", axis=0)
+            )
+
             df_hill_resample["color_grade"] = df_hill_resample["grade"].map(
                 grade_to_color
             )
@@ -501,8 +511,8 @@ def generate_page_per_route():
             title = (
                 f"""Climb {index+1}: {row['length']:.2f}km """
                 f"""Total ascent: {int(row['total_ascent']):d}hm """
-                f"""Avg. grade: {(row['grade']/100_000):.2%} """
-                f"""Max. grade: {max_grade:.2%}"""
+                f"""Grade: {(row['grade']/100_000):.1%} avg., """
+                f"""{max_grade:.1%} max"""
             )
             altair_climb_profile = generate_climb_profile(df_hill_resample, title)
             folium_climb_profile = features.VegaLite(
