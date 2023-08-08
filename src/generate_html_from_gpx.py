@@ -18,6 +18,8 @@ from jinja2 import Environment, FileSystemLoader
 from scipy.signal import find_peaks
 
 START_LOCATION = [50.876777, 4.715101]  # Position dataroots office
+GPX_FILE_TO_HIGHLIGHT = "DR NE Aarschot.gpx"  # Filename of gpx to highlight in red
+APPLY_GARMIN_RULES = False  # Filter climbs with Garmin rules
 
 
 def get_gpx(filepath: str):
@@ -146,9 +148,10 @@ def find_climbs(df: pd.DataFrame) -> pd.DataFrame:
         .assign(max_elevation=df["elev"].max().round(-1) + 10)
     )
     # Garmin rules
-    # df_peaks_filtered = df_peaks_meta.query(
-    #   "(climb_score >= 1_500) & (length >= 0.5) & (grade >= 3_000)"
-    # )
+    if APPLY_GARMIN_RULES:
+        df_peaks_filtered = df_peaks_filtered.query(
+            "(climb_score >= 1_500) & (length >= 0.5) & (grade >= 3_000)"
+        )
     return df_peaks_filtered
 
 
@@ -334,7 +337,7 @@ def generate_overview_map():
     for gpxfile in Path("data/gpx/").glob("*.gpx"):
         # Open gpx file and parse its content
         ave_lat, ave_lon, lon_list, lat_list, h_list = get_gpx(gpxfile)
-        color = "red" if gpxfile.name == "DR NE Aarschot.gpx" else "#38b580"
+        color = "red" if gpxfile.name == GPX_FILE_TO_HIGHLIGHT else "#38b580"
         # Add a polyline to connect the track points
         folium.PolyLine(
             list(zip(lat_list, lon_list)),
