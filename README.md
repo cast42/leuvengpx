@@ -35,4 +35,15 @@ This project was derived from the [minimal python boilerplate](https://github.co
 5. Add your GPX files to the data/gpx folder
 6. Run `python generate_html_from_gpx.py`to generate index.html and content of data/html
 7. Goto Pages in Settings to make this a Github Pages repository.
-8. Browse to `https://<username>.github.io/<repository>``. E.g. [https://cast42.github.io/leuvengpx/](https://cast42.github.io/leuvengpx/)
+8. Browse to `https://<username>.github.io/<repository>`. E.g. [https://cast42.github.io/leuvengpx/](https://cast42.github.io/leuvengpx/)
+
+# Adding a new gpx file
+
+From the root of this project, add the gpx file "DR C new.gpx" to the data/gpx directory, generate the new version of the site by running the python script and check-in the new files into the version control:
+
+1. `cp DR\ C\ new.gpx data/gpx`
+2. `python generate_html_from_gpx.py`
+3. `git add  data/gpx/DR\ C\ new.gpx`
+4. `git add data/html/*.html`
+5. `git commit -m "added new.gpx"`
+6. `git push`
