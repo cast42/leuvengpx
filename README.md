@@ -42,8 +42,7 @@ This project was derived from the [minimal python boilerplate](https://github.co
 From the root of this project, add the gpx file "DR C new.gpx" to the data/gpx directory, generate the new version of the site by running the python script and check-in the new files into the version control:
 
 1. `cp DR\ C\ new.gpx data/gpx`
-2. `python src/generate_html_from_gpx.py`
-3. `git add  data/gpx/DR\ C\ new.gpx`
-4. `git add data/html/*.html`
-5. `git commit -m "added new.gpx"`
-6. `git push`
+2. `poetry shell``
+3. `python src/generate_html_from_gpx.py`
+4. `git commit -a -m "added DR C new.gpx"`
+5. `git push`
