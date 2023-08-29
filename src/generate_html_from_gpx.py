@@ -18,7 +18,7 @@ from jinja2 import Environment, FileSystemLoader
 from scipy.signal import find_peaks
 
 START_LOCATION = [50.876777, 4.715101]  # Position dataroots office
-GPX_FILE_TO_HIGHLIGHT = "DR SE Tienen.gpx"  # Filename of gpx to highlight in red
+GPX_FILE_TO_HIGHLIGHT = "DR SW Eizer.gpx"  # Filename of gpx to highlight in red
 APPLY_GARMIN_RULES = False  # Filter climbs with Garmin rules
 
 
