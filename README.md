@@ -43,6 +43,7 @@ From the root of this project, add the gpx file "DR C new.gpx" to the data/gpx d
 
 1. `cp DR\ C\ new.gpx data/gpx`
 2. `poetry shell``
+3. In src/generate_html_from_gpx.py , chance the constant GPX_FILE_TO_HIGHLIGHT to the filename of new gpx file
 3. `python src/generate_html_from_gpx.py`
 4. `git commit -a -m "added DR C new.gpx"`
 5. `git push`
