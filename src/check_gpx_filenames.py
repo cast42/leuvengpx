@@ -3,7 +3,7 @@ from pathlib import Path
 
 regex = r"^DR\s[N|E|W|C|S]{1,2}\s[\w\s]+\.gpx$"
 
-test_str = "DR NE Vlooibergtoren.gpx"
+test_str = "DR SW Eizer II.gpx"
 
 for gpxfile in Path("data/gpx/").glob("*.gpx"):
     test_str = gpxfile.name
