@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gpx creator="StravaGPX" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.topografix.com/GPX/1/1 http://www.topografix.com/GPX/1/1/gpx.xsd" version="1.1" xmlns="http://www.topografix.com/GPX/1/1">
  <metadata>
-  <name>DR Noord West 40K</name>
+  <name>DR NW Kampenhout 40K</name>
   <author>
    <name>Lode Nachtergaele</name>
    <link href="https://www.strava.com/athletes/505183"/>
@@ -13,7 +13,7 @@
   <link href="https://www.strava.com/routes/2966338912897850616"/>
  </metadata>
  <trk>
-  <name>DR Noord West 40K</name>
+  <name>DR NW Kampenhout 40K</name>
   <link href="https://www.strava.com/routes/2966338912897850616"/>
   <type>Fietsrit</type>
   <trkseg>
