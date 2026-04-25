@@ -41,11 +41,12 @@ Valid directions are `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW` and `C`.
 
 ## Publishing
 
-`just publish` builds the static site into `dist/` and publishes that directory to
-the `gh-pages` branch with `git subtree push --prefix dist origin gh-pages`.
+`just publish` runs the full check locally, then pushes the current commit to
+`origin/main`. That push triggers the `pages` GitHub Actions workflow, which
+builds `dist/` and deploys it with GitHub Pages.
 
-Configure GitHub Pages to publish from the `gh-pages` branch. The Vite base path
-is `/leuvengpx/`, matching `https://cast42.github.io/leuvengpx/`.
+Configure GitHub Pages to use GitHub Actions as its source. The Vite base path is
+`/leuvengpx/`, matching `https://cast42.github.io/leuvengpx/`.
 
 ## Route Sharing
 

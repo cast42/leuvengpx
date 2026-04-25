@@ -30,8 +30,8 @@ add-gpx file:
     uv run python -m src.add_gpx "{{file}}"
     just generate
 
-publish: build
-    git subtree push --prefix dist origin gh-pages
+publish: check
+    uv run python scripts/trigger_pages_deploy.py
 
 lint:
     uv run ruff check --fix
