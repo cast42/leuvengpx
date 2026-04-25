@@ -161,3 +161,9 @@ cython_debug/
 
 # OSX
 .DS_Store
+
+# JavaScript
+node_modules/
+dist/
+public/
+*.tsbuildinfo

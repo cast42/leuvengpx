@@ -1,49 +1,74 @@
-## Race bike GPX files starting in Leuven Belgium
+# Leuven GPX
 
-This repository contains a Python script to generate HTML starting from a folder of GPX files.
-The result is an interactive overview map, containing all gpx routes and a table with links
-to detailed overviews per route plus a download button for the GPX files.
+Static website for race bike GPX routes that start in Leuven.
 
-The detail page per route shows a map with the route and a height profile showing
-the altitude and climbs along the route.
+Maintainers add GPX files to `data/gpx`. The Python generator reads those files,
+calculates distance, elevation gain and climbs, and writes JSON plus share-preview
+HTML into `public/`. The React frontend renders the homepage, overview map, route
+detail pages, elevation chart, climb cards and GPX download links.
 
-The climbs are detected using scipy's [find_peak](https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.find_peaks.html) algorithm.
+## Requirements
 
-The GPX files must be stored in the data/gpx folder.
-All files matching data/gpx/*.gpx will appear on the front page index.html.
-The GPX files must comply to the following template: `r"^DR\s[N|E|W|C|S]{1,2}\s[\w\s]+\.gpx$"`
+- Python 3.11+
+- [uv](https://docs.astral.sh/uv/)
+- Node.js 22+
+- [just](https://github.com/casey/just)
 
-This project was derived from the [minimal python boilerplate](https://github.com/datarootsio/python-minimal-boilerplate). The template project contains the following setup ready for you to go:
+## Setup
 
-* package/environment management
-  * `poetry`
-* code validation
-  * `black`
-  * `ruff`
-  * `pytest`
-* pre-commit hooks
+```bash
+just install
+```
 
-# Setup
+## Common Commands
 
-1. Clone this repo
-2. Make sure to [install Poetry](https://python-poetry.org/docs/#installation)
-3. In your project directory run
-   1. `poetry shell`
-   2. `poetry install`
-   3. `pre-commit install`
-4. On each `git commit` the code validation packages will be run before the actual commit.
-5. Add your GPX files to the data/gpx folder
-6. Run `python generate_html_from_gpx.py`to generate index.html and content of data/html
-7. Goto Pages in Settings to make this a Github Pages repository.
-8. Browse to `https://<username>.github.io/<repository>`. E.g. [https://cast42.github.io/leuvengpx/](https://cast42.github.io/leuvengpx/)
+```bash
+just generate            # Generate public route data from data/gpx
+just preview             # Generate data and start the local Vite dev server
+just build               # Generate data and build dist/
+just serve               # Build and serve dist/ locally
+just add-gpx path/to.gpx # Copy a GPX into data/gpx and regenerate data
+just check               # Python lint, typing, tests, frontend typecheck and build
+```
 
-# Adding a new gpx file
+The expected GPX filename format is:
 
-From the root of this project, add the gpx file "DR C new.gpx" to the data/gpx directory, generate the new version of the site by running the python script and check-in the new files into the version control:
+```text
+DR <direction> <route name>.gpx
+```
 
-1. `cp DR\ C\ new.gpx data/gpx`
-2. `poetry shell``
-3. In src/generate_html_from_gpx.py , chance the constant GPX_FILE_TO_HIGHLIGHT to the filename of new gpx file
-3. `python src/generate_html_from_gpx.py`
-4. `git commit -a -m "added DR C new.gpx"`
-5. `git push`
+Valid directions are `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW` and `C`.
+
+## Publishing
+
+`just publish` builds the static site into `dist/` and publishes that directory to
+the `gh-pages` branch with `git subtree push --prefix dist origin gh-pages`.
+
+Configure GitHub Pages to publish from the `gh-pages` branch. The Vite base path
+is `/leuvengpx/`, matching `https://cast42.github.io/leuvengpx/`.
+
+## Route Sharing
+
+Every route gets a generated preview page at:
+
+```text
+routes/<route-slug>/
+```
+
+Those pages contain route-specific Open Graph metadata for Slack, WhatsApp and
+other unfurlers, then redirect visitors into the interactive React route detail.
+
+## Climb Detection
+
+Climbs are detected from cleaned GPX elevation data:
+
+1. A median filter removes sharp elevation spikes.
+2. Local valleys and peaks are paired into candidate climbs.
+3. Candidates are kept when their climb score is at least `1500` and length is
+   at least `250 m`.
+
+The climb score follows the Garmin-style formula:
+
+```text
+length_in_meters * average_grade_percent
+```

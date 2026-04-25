@@ -1,37 +1,19 @@
 repos:
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.11.13
+    hooks:
+      - id: ruff
+        args: [--fix]
+      - id: ruff-format
   - repo: local
     hooks:
-      - id: isort
-        name: isort
-        stages: [commit]
-        types: [python]
-        entry: poetry run isort .
+      - id: ty
+        name: ty
+        entry: uv run ty check
         language: system
         pass_filenames: false
-        always_run: true
-      - id: black
-        name: black
-        stages: [commit]
-        types: [python]
-        entry: poetry run black .
-        language: system
-        pass_filenames: false
-        always_run: true
-      - id: ruff
-        name: ruff
-        stages: [commit]
-        types: [python]
-        entry: poetry run ruff .
-        language: system
-        pass_filenames: false
-        always_run: true
-        fail_fast: true
       - id: pytest
         name: pytest
-        stages: [commit]
-        types: [python]
-        entry: poetry run pytest
+        entry: uv run pytest -q
         language: system
         pass_filenames: false
-        always_run: true
-        fail_fast: true

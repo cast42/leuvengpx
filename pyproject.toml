@@ -1,29 +1,34 @@
-[tool.poetry]
+[project]
 name = "leuvengpx"
-version = "0.1.0"
-description = "A Python project for generating maps from gpx"
-authors = ["Arthur Dent <arthur@dent.space>"]
-license = "MIT"
+version = "0.2.0"
+description = "Generate a static Leuven GPX route website."
 readme = "README.md"
-packages = [{include = "src"}]
+requires-python = ">=3.11,<3.14"
+license = "MIT"
+authors = [{ name = "Lode Nachtergaele" }]
+dependencies = [
+    "gpxpy>=1.6.2",
+    "numpy>=2.0.0",
+    "pillow>=11.0.0",
+]
 
-[tool.poetry.dependencies]
-python = "<3.13,>=3.10"
-folium = "^0.14.0"
-altair = "5.0.1"
-scipy = "^1.11.1"
+[dependency-groups]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.11.0",
+    "ty>=0.0.1a8",
+]
 
+[tool.uv]
+package = false
 
-[tool.poetry.group.dev.dependencies]
-black = "^23.3.0"
-isort = "^5.10.1"
-pytest = "^7.3.1"
-pre-commit = "^3.3.2"
-ruff = "^0.0.270"
+[tool.ruff]
+line-length = 88
+target-version = "py311"
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
 
-[tool.isort]
-profile = "black"
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
