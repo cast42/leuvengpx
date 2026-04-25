@@ -4,10 +4,11 @@ import { defineConfig } from "vite";
 
 export default defineConfig({
   base: "/leuvengpx/",
+  root: "frontend",
   plugins: [react(), tailwindcss()],
-  publicDir: "public",
+  publicDir: "../public",
   build: {
-    outDir: "dist",
+    outDir: "../dist",
     emptyOutDir: true
   },
   server: {

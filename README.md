@@ -41,12 +41,12 @@ Valid directions are `N`, `NE`, `E`, `SE`, `S`, `SW`, `W`, `NW` and `C`.
 
 ## Publishing
 
-`just publish` runs the full check locally, then pushes the current commit to
-`origin/main`. That push triggers the `pages` GitHub Actions workflow, which
-builds `dist/` and deploys it with GitHub Pages.
+`just publish` runs the full check locally, copies the generated `dist/` output
+into the repository root paths served by GitHub Pages, commits that generated
+site when needed, and pushes to `origin/main`.
 
-Configure GitHub Pages to use GitHub Actions as its source. The Vite base path is
-`/leuvengpx/`, matching `https://cast42.github.io/leuvengpx/`.
+Configure GitHub Pages to publish from the `main` branch root. The Vite base path
+is `/leuvengpx/`, matching `https://cast42.github.io/leuvengpx/`.
 
 ## Route Sharing
 
