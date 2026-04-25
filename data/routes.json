@@ -1,0 +1,782 @@
+[
+  {
+    "slug": "dr-e-gladbeek",
+    "name": "Gladbeek",
+    "file_name": "DR E Gladbeek.gpx",
+    "direction": "E",
+    "distance": 51.9,
+    "elevation_gain": 237,
+    "climb_count": 6,
+    "start": [
+      50.87715,
+      4.7162
+    ],
+    "end": [
+      50.8752,
+      4.71517
+    ],
+    "bounds": [
+      [
+        50.8111,
+        4.71465
+      ],
+      [
+        50.88583,
+        4.94574
+      ]
+    ],
+    "detail_url": "routes/dr-e-gladbeek/",
+    "gpx_url": "gpx/DR E Gladbeek.gpx",
+    "icon": "arrow-right"
+  },
+  {
+    "slug": "dr-e-lubbeek",
+    "name": "Lubbeek",
+    "file_name": "DR E Lubbeek.gpx",
+    "direction": "E",
+    "distance": 41.5,
+    "elevation_gain": 278,
+    "climb_count": 6,
+    "start": [
+      50.87738,
+      4.71636
+    ],
+    "end": [
+      50.87518,
+      4.71516
+    ],
+    "bounds": [
+      [
+        50.85412,
+        4.71124
+      ],
+      [
+        50.9042,
+        4.84366
+      ]
+    ],
+    "detail_url": "routes/dr-e-lubbeek/",
+    "gpx_url": "gpx/DR E Lubbeek.gpx",
+    "icon": "arrow-right"
+  },
+  {
+    "slug": "dr-n-haacht",
+    "name": "Haacht",
+    "file_name": "DR N Haacht.gpx",
+    "direction": "N",
+    "distance": 46.3,
+    "elevation_gain": 90,
+    "climb_count": 3,
+    "start": [
+      50.87485,
+      4.71505
+    ],
+    "end": [
+      50.87706,
+      4.71609
+    ],
+    "bounds": [
+      [
+        50.86009,
+        4.62334
+      ],
+      [
+        50.98953,
+        4.71801
+      ]
+    ],
+    "detail_url": "routes/dr-n-haacht/",
+    "gpx_url": "gpx/DR N Haacht.gpx",
+    "icon": "arrow-up"
+  },
+  {
+    "slug": "dr-n-haacht-50k",
+    "name": "Haacht 50K",
+    "file_name": "DR N Haacht 50K.gpx",
+    "direction": "N",
+    "distance": 48.4,
+    "elevation_gain": 107,
+    "climb_count": 2,
+    "start": [
+      50.87616,
+      4.71512
+    ],
+    "end": [
+      50.87661,
+      4.71528
+    ],
+    "bounds": [
+      [
+        50.8753,
+        4.55098
+      ],
+      [
+        50.98953,
+        4.71568
+      ]
+    ],
+    "detail_url": "routes/dr-n-haacht-50k/",
+    "gpx_url": "gpx/DR N Haacht 50K.gpx",
+    "icon": "arrow-up"
+  },
+  {
+    "slug": "dr-n-rotselaar-38k",
+    "name": "Rotselaar 38K",
+    "file_name": "DR N Rotselaar 38K.gpx",
+    "direction": "N",
+    "distance": 37.3,
+    "elevation_gain": 141,
+    "climb_count": 2,
+    "start": [
+      50.8762,
+      4.71483
+    ],
+    "end": [
+      50.87476,
+      4.71502
+    ],
+    "bounds": [
+      [
+        50.87099,
+        4.69095
+      ],
+      [
+        50.97011,
+        4.78391
+      ]
+    ],
+    "detail_url": "routes/dr-n-rotselaar-38k/",
+    "gpx_url": "gpx/DR N Rotselaar 38K.gpx",
+    "icon": "arrow-up"
+  },
+  {
+    "slug": "dr-ne-aarschot",
+    "name": "Aarschot",
+    "file_name": "DR NE Aarschot.gpx",
+    "direction": "NE",
+    "distance": 53.9,
+    "elevation_gain": 117,
+    "climb_count": 2,
+    "start": [
+      50.8767,
+      4.71582
+    ],
+    "end": [
+      50.87678,
+      4.71547
+    ],
+    "bounds": [
+      [
+        50.8767,
+        4.6435
+      ],
+      [
+        50.98871,
+        4.83747
+      ]
+    ],
+    "detail_url": "routes/dr-ne-aarschot/",
+    "gpx_url": "gpx/DR NE Aarschot.gpx",
+    "icon": "arrow-up-right"
+  },
+  {
+    "slug": "dr-ne-castle-of-horst",
+    "name": "Castle of Horst",
+    "file_name": "DR NE Castle of Horst.gpx",
+    "direction": "NE",
+    "distance": 38.5,
+    "elevation_gain": 147,
+    "climb_count": 4,
+    "start": [
+      50.87715,
+      4.7162
+    ],
+    "end": [
+      50.87517,
+      4.71516
+    ],
+    "bounds": [
+      [
+        50.87099,
+        4.71404
+      ],
+      [
+        50.94404,
+        4.83548
+      ]
+    ],
+    "detail_url": "routes/dr-ne-castle-of-horst/",
+    "gpx_url": "gpx/DR NE Castle of Horst.gpx",
+    "icon": "arrow-up-right"
+  },
+  {
+    "slug": "dr-ne-de-vogel-lokker",
+    "name": "De vogel-lokker",
+    "file_name": "DR NE De vogel-lokker.gpx",
+    "direction": "NE",
+    "distance": 46.5,
+    "elevation_gain": 149,
+    "climb_count": 4,
+    "start": [
+      50.87625,
+      4.7147
+    ],
+    "end": [
+      50.87633,
+      4.71449
+    ],
+    "bounds": [
+      [
+        50.87539,
+        4.70572
+      ],
+      [
+        50.99241,
+        4.87462
+      ]
+    ],
+    "detail_url": "routes/dr-ne-de-vogel-lokker/",
+    "gpx_url": "gpx/DR NE De vogel-lokker.gpx",
+    "icon": "arrow-up-right"
+  },
+  {
+    "slug": "dr-ne-houwaert",
+    "name": "Houwaert",
+    "file_name": "DR NE Houwaert.gpx",
+    "direction": "NE",
+    "distance": 51.0,
+    "elevation_gain": 294,
+    "climb_count": 7,
+    "start": [
+      50.87548,
+      4.71527
+    ],
+    "end": [
+      50.87363,
+      4.71467
+    ],
+    "bounds": [
+      [
+        50.865,
+        4.71467
+      ],
+      [
+        50.95256,
+        4.90319
+      ]
+    ],
+    "detail_url": "routes/dr-ne-houwaert/",
+    "gpx_url": "gpx/DR NE Houwaert.gpx",
+    "icon": "arrow-up-right"
+  },
+  {
+    "slug": "dr-ne-rillaar",
+    "name": "Rillaar",
+    "file_name": "DR NE Rillaar.gpx",
+    "direction": "NE",
+    "distance": 53.5,
+    "elevation_gain": 174,
+    "climb_count": 5,
+    "start": [
+      50.87715,
+      4.7162
+    ],
+    "end": [
+      50.87843,
+      4.7156
+    ],
+    "bounds": [
+      [
+        50.87715,
+        4.70221
+      ],
+      [
+        50.98871,
+        4.90489
+      ]
+    ],
+    "detail_url": "routes/dr-ne-rillaar/",
+    "gpx_url": "gpx/DR NE Rillaar.gpx",
+    "icon": "arrow-up-right"
+  },
+  {
+    "slug": "dr-ne-vlooibergtoren-ii",
+    "name": "Vlooibergtoren II",
+    "file_name": "DR NE Vlooibergtoren II.gpx",
+    "direction": "NE",
+    "distance": 46.5,
+    "elevation_gain": 217,
+    "climb_count": 5,
+    "start": [
+      50.87629,
+      4.71517
+    ],
+    "end": [
+      50.87626,
+      4.71467
+    ],
+    "bounds": [
+      [
+        50.85991,
+        4.71457
+      ],
+      [
+        50.95864,
+        4.92151
+      ]
+    ],
+    "detail_url": "routes/dr-ne-vlooibergtoren-ii/",
+    "gpx_url": "gpx/DR NE Vlooibergtoren II.gpx",
+    "icon": "arrow-up-right"
+  },
+  {
+    "slug": "dr-nw-kampenhout-40k",
+    "name": "Kampenhout 40K",
+    "file_name": "DR NW Kampenhout 40K.gpx",
+    "direction": "NW",
+    "distance": 38.0,
+    "elevation_gain": 95,
+    "climb_count": 2,
+    "start": [
+      50.87616,
+      4.71512
+    ],
+    "end": [
+      50.87616,
+      4.71512
+    ],
+    "bounds": [
+      [
+        50.8753,
+        4.55571
+      ],
+      [
+        50.94102,
+        4.71568
+      ]
+    ],
+    "detail_url": "routes/dr-nw-kampenhout-40k/",
+    "gpx_url": "gpx/DR NW Kampenhout 40K.gpx",
+    "icon": "arrow-up-left"
+  },
+  {
+    "slug": "dr-nw-schiplaken-55k",
+    "name": "Schiplaken 55K",
+    "file_name": "DR NW Schiplaken 55K.gpx",
+    "direction": "NW",
+    "distance": 55.0,
+    "elevation_gain": 128,
+    "climb_count": 3,
+    "start": [
+      50.87616,
+      4.71512
+    ],
+    "end": [
+      50.87497,
+      4.71509
+    ],
+    "bounds": [
+      [
+        50.87497,
+        4.50552
+      ],
+      [
+        50.98214,
+        4.71637
+      ]
+    ],
+    "detail_url": "routes/dr-nw-schiplaken-55k/",
+    "gpx_url": "gpx/DR NW Schiplaken 55K.gpx",
+    "icon": "arrow-up-left"
+  },
+  {
+    "slug": "dr-s-dion-le-mont",
+    "name": "Dion-le-mont",
+    "file_name": "DR S Dion-le-mont.gpx",
+    "direction": "S",
+    "distance": 60.6,
+    "elevation_gain": 316,
+    "climb_count": 6,
+    "start": [
+      50.87576,
+      4.71538
+    ],
+    "end": [
+      50.87616,
+      4.71512
+    ],
+    "bounds": [
+      [
+        50.69652,
+        4.63293
+      ],
+      [
+        50.87723,
+        4.7314
+      ]
+    ],
+    "detail_url": "routes/dr-s-dion-le-mont/",
+    "gpx_url": "gpx/DR S Dion-le-mont.gpx",
+    "icon": "arrow-down"
+  },
+  {
+    "slug": "dr-s-incourt",
+    "name": "Incourt",
+    "file_name": "DR S Incourt.gpx",
+    "direction": "S",
+    "distance": 63.7,
+    "elevation_gain": 309,
+    "climb_count": 8,
+    "start": [
+      50.87634,
+      4.71447
+    ],
+    "end": [
+      50.87493,
+      4.71508
+    ],
+    "bounds": [
+      [
+        50.69163,
+        4.67507
+      ],
+      [
+        50.87634,
+        4.83023
+      ]
+    ],
+    "detail_url": "routes/dr-s-incourt/",
+    "gpx_url": "gpx/DR S Incourt.gpx",
+    "icon": "arrow-down"
+  },
+  {
+    "slug": "dr-s-tout-vent",
+    "name": "Tout Vent",
+    "file_name": "DR S Tout Vent.gpx",
+    "direction": "S",
+    "distance": 72.7,
+    "elevation_gain": 462,
+    "climb_count": 9,
+    "start": [
+      50.87576,
+      4.71538
+    ],
+    "end": [
+      50.87472,
+      4.71459
+    ],
+    "bounds": [
+      [
+        50.67301,
+        4.60082
+      ],
+      [
+        50.87576,
+        4.72848
+      ]
+    ],
+    "detail_url": "routes/dr-s-tout-vent/",
+    "gpx_url": "gpx/DR S Tout Vent.gpx",
+    "icon": "arrow-down"
+  },
+  {
+    "slug": "dr-se-pallox-tower",
+    "name": "Pallox tower",
+    "file_name": "DR SE Pallox tower.gpx",
+    "direction": "SE",
+    "distance": 42.9,
+    "elevation_gain": 177,
+    "climb_count": 5,
+    "start": [
+      50.87539,
+      4.71524
+    ],
+    "end": [
+      50.87499,
+      4.7151
+    ],
+    "bounds": [
+      [
+        50.78261,
+        4.71457
+      ],
+      [
+        50.87539,
+        4.89981
+      ]
+    ],
+    "detail_url": "routes/dr-se-pallox-tower/",
+    "gpx_url": "gpx/DR SE Pallox tower.gpx",
+    "icon": "arrow-down-right"
+  },
+  {
+    "slug": "dr-se-tienen",
+    "name": "Tienen",
+    "file_name": "DR SE Tienen.gpx",
+    "direction": "SE",
+    "distance": 44.7,
+    "elevation_gain": 174,
+    "climb_count": 5,
+    "start": [
+      50.876692,
+      4.715799
+    ],
+    "end": [
+      50.875763,
+      4.715523
+    ],
+    "bounds": [
+      [
+        50.805148,
+        4.71451
+      ],
+      [
+        50.885836,
+        4.924071
+      ]
+    ],
+    "detail_url": "routes/dr-se-tienen/",
+    "gpx_url": "gpx/DR SE Tienen.gpx",
+    "icon": "arrow-down-right"
+  },
+  {
+    "slug": "dr-sw-eizer",
+    "name": "Eizer",
+    "file_name": "DR SW Eizer.gpx",
+    "direction": "SW",
+    "distance": 49.0,
+    "elevation_gain": 307,
+    "climb_count": 9,
+    "start": [
+      50.87513,
+      4.71474
+    ],
+    "end": [
+      50.87639,
+      4.71562
+    ],
+    "bounds": [
+      [
+        50.7888,
+        4.53765
+      ],
+      [
+        50.87639,
+        4.71801
+      ]
+    ],
+    "detail_url": "routes/dr-sw-eizer/",
+    "gpx_url": "gpx/DR SW Eizer.gpx",
+    "icon": "arrow-down-left"
+  },
+  {
+    "slug": "dr-sw-eizer-ii",
+    "name": "Eizer II",
+    "file_name": "DR SW Eizer II.gpx",
+    "direction": "SW",
+    "distance": 45.2,
+    "elevation_gain": 265,
+    "climb_count": 5,
+    "start": [
+      50.87582,
+      4.71527
+    ],
+    "end": [
+      50.87502,
+      4.71511
+    ],
+    "bounds": [
+      [
+        50.78097,
+        4.55019
+      ],
+      [
+        50.88079,
+        4.71801
+      ]
+    ],
+    "detail_url": "routes/dr-sw-eizer-ii/",
+    "gpx_url": "gpx/DR SW Eizer II.gpx",
+    "icon": "arrow-down-left"
+  },
+  {
+    "slug": "dr-sw-eizer-iii",
+    "name": "Eizer III",
+    "file_name": "DR SW Eizer III.gpx",
+    "direction": "SW",
+    "distance": 50.1,
+    "elevation_gain": 235,
+    "climb_count": 4,
+    "start": [
+      50.87561,
+      4.71532
+    ],
+    "end": [
+      50.87502,
+      4.71511
+    ],
+    "bounds": [
+      [
+        50.80084,
+        4.5504
+      ],
+      [
+        50.90426,
+        4.71825
+      ]
+    ],
+    "detail_url": "routes/dr-sw-eizer-iii/",
+    "gpx_url": "gpx/DR SW Eizer III.gpx",
+    "icon": "arrow-down-left"
+  },
+  {
+    "slug": "dr-sw-huldenberg",
+    "name": "Huldenberg",
+    "file_name": "DR SW Huldenberg.gpx",
+    "direction": "SW",
+    "distance": 51.0,
+    "elevation_gain": 360,
+    "climb_count": 7,
+    "start": [
+      50.87555,
+      4.7153
+    ],
+    "end": [
+      50.87494,
+      4.71508
+    ],
+    "bounds": [
+      [
+        50.77583,
+        4.56047
+      ],
+      [
+        50.88119,
+        4.72848
+      ]
+    ],
+    "detail_url": "routes/dr-sw-huldenberg/",
+    "gpx_url": "gpx/DR SW Huldenberg.gpx",
+    "icon": "arrow-down-left"
+  },
+  {
+    "slug": "dr-sw-jezus-eik",
+    "name": "Jezus-Eik",
+    "file_name": "DR SW Jezus-Eik.gpx",
+    "direction": "SW",
+    "distance": 54.2,
+    "elevation_gain": 293,
+    "climb_count": 7,
+    "start": [
+      50.87495,
+      4.71467
+    ],
+    "end": [
+      50.87442,
+      4.71489
+    ],
+    "bounds": [
+      [
+        50.78232,
+        4.48305
+      ],
+      [
+        50.87555,
+        4.71801
+      ]
+    ],
+    "detail_url": "routes/dr-sw-jezus-eik/",
+    "gpx_url": "gpx/DR SW Jezus-Eik.gpx",
+    "icon": "arrow-down-left"
+  },
+  {
+    "slug": "dr-sw-overijse",
+    "name": "Overijse",
+    "file_name": "DR SW Overijse.gpx",
+    "direction": "SW",
+    "distance": 54.5,
+    "elevation_gain": 310,
+    "climb_count": 6,
+    "start": [
+      50.87539,
+      4.71524
+    ],
+    "end": [
+      50.87601,
+      4.71546
+    ],
+    "bounds": [
+      [
+        50.75103,
+        4.54088
+      ],
+      [
+        50.87601,
+        4.71801
+      ]
+    ],
+    "detail_url": "routes/dr-sw-overijse/",
+    "gpx_url": "gpx/DR SW Overijse.gpx",
+    "icon": "arrow-down-left"
+  },
+  {
+    "slug": "dr-w-kraainem",
+    "name": "Kraainem",
+    "file_name": "DR W Kraainem.gpx",
+    "direction": "W",
+    "distance": 50.2,
+    "elevation_gain": 185,
+    "climb_count": 4,
+    "start": [
+      50.87615,
+      4.71512
+    ],
+    "end": [
+      50.8751,
+      4.71514
+    ],
+    "bounds": [
+      [
+        50.83238,
+        4.45211
+      ],
+      [
+        50.90426,
+        4.71801
+      ]
+    ],
+    "detail_url": "routes/dr-w-kraainem/",
+    "gpx_url": "gpx/DR W Kraainem.gpx",
+    "icon": "arrow-left"
+  },
+  {
+    "slug": "dr-w-vossem-41k",
+    "name": "Vossem 41K",
+    "file_name": "DR W Vossem 41K.gpx",
+    "direction": "W",
+    "distance": 41.0,
+    "elevation_gain": 158,
+    "climb_count": 3,
+    "start": [
+      50.87622,
+      4.7148
+    ],
+    "end": [
+      50.87628,
+      4.71462
+    ],
+    "bounds": [
+      [
+        50.83238,
+        4.53373
+      ],
+      [
+        50.90426,
+        4.71801
+      ]
+    ],
+    "detail_url": "routes/dr-w-vossem-41k/",
+    "gpx_url": "gpx/DR W Vossem 41K.gpx",
+    "icon": "arrow-left"
+  }
+]
