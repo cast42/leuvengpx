@@ -8,6 +8,7 @@ license = "MIT"
 authors = [{ name = "Lode Nachtergaele" }]
 dependencies = [
     "gpxpy>=1.6.2",
+    "mlx-knife>=2.0.5",
     "numpy>=2.0.0",
     "pillow>=11.0.0",
 ]
